@@ -10,6 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
 authors = [{ name = "Scrubsmith Contributors" }]
+maintainers = [{ name = "Scrubsmith Contributors" }]
 keywords = ["sanitization", "pii", "secrets", "privacy", "logs", "debugging"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -30,11 +31,19 @@ dependencies = [
     "typer>=0.12.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/scrubsmith/scrubsmith"
+Documentation = "https://github.com/scrubsmith/scrubsmith#readme"
+Repository = "https://github.com/scrubsmith/scrubsmith"
+Issues = "https://github.com/scrubsmith/scrubsmith/issues"
+
 [project.optional-dependencies]
 dev = [
+    "build>=1.2.0",
     "mypy>=1.11.0",
     "pytest>=8.0.0",
     "ruff>=0.6.0",
+    "twine>=5.1.0",
     "types-PyYAML>=6.0.0",
 ]
 
@@ -43,6 +52,20 @@ scrubsmith = "scrubsmith.cli:app"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/scrubsmith"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.git",
+    "/.github",
+    "/.venv",
+    "/dist",
+    "/build",
+    "/.pytest_cache",
+    "/.mypy_cache",
+    "/.ruff_cache",
+    "/htmlcov",
+    "/tests",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -30,14 +30,20 @@ Scrubsmith focuses on the **developer workflow**: detect → transform → prese
 
 ## Installation
 
+Scrubsmith is **not yet published on PyPI**. Until the first release, install from a local checkout:
+
 ```bash
-pip install scrubsmith
+git clone https://github.com/scrubsmith/scrubsmith.git
+cd scrubsmith
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
 ```
 
-For development:
+After the first PyPI release, installation will be:
 
 ```bash
-pip install -e ".[dev]"
+pip install scrubsmith
 ```
 
 Requires Python 3.12+.

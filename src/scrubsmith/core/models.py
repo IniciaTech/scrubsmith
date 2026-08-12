@@ -125,8 +125,9 @@ class SanitizationStats(BaseModel):
 
     lines_processed: int = 0
     values_transformed: int = 0
-    secrets_redacted: int = 0
     pii_pseudonymized: int = 0
+    sensitive_values_redacted: int = 0
+    secrets_redacted: int = 0
     incomplete_pem_blocks: int = 0
     oversized_pem_blocks: int = 0
 

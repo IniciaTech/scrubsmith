@@ -119,6 +119,18 @@ The same email always maps to the same pseudonym within one sanitization run.
 
 These codes are designed for CI integration.
 
+### Reports
+
+`scrubsmith scan` prints a per-category summary (emails, phones, Spanish IDs, IPs, IBANs, credit cards, secrets) plus **Total findings**, which reconciles with the internal `ScanSummary`.
+
+`sanitize logs` reports transformation counts by **strategy applied**:
+
+- **PII pseudonymized** — `fake` or `hash` transformations
+- **Sensitive values redacted** — non-secret values transformed with `redact` (e.g. credit cards)
+- **Secrets redacted** — secret findings and PEM/private-key blocks
+
+`values_transformed` counts line-level replacements only; PEM blocks increment **Secrets redacted** without increasing `values_transformed`.
+
 ## Configuration
 
 ```yaml

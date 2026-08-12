@@ -67,6 +67,8 @@ class Sanitizer:
                 stats.values_transformed += 1
                 if finding.category == Category.SECRET:
                     stats.secrets_redacted += 1
+                elif strategy == Strategy.REDACT:
+                    stats.sensitive_values_redacted += 1
                 else:
                     stats.pii_pseudonymized += 1
 

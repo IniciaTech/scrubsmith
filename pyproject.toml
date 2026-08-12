@@ -32,10 +32,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/scrubsmith/scrubsmith"
-Documentation = "https://github.com/scrubsmith/scrubsmith#readme"
-Repository = "https://github.com/scrubsmith/scrubsmith"
-Issues = "https://github.com/scrubsmith/scrubsmith/issues"
+Homepage = "https://github.com/IniciaTech/scrubsmith"
+Documentation = "https://github.com/IniciaTech/scrubsmith#readme"
+Repository = "https://github.com/IniciaTech/scrubsmith"
+Issues = "https://github.com/IniciaTech/scrubsmith/issues"
 
 [project.optional-dependencies]
 dev = [

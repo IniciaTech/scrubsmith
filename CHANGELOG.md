@@ -28,4 +28,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - IPv4 misclassification of dotted software versions (e.g. browser user-agent strings)
 - In-process verifier context mismatch causing intermittent verification FAIL after sanitize
 
-[0.1.0]: https://github.com/scrubsmith/scrubsmith/releases/tag/v0.1.0
+[0.1.0]: https://github.com/IniciaTech/scrubsmith/releases/tag/v0.1.0

@@ -26,7 +26,7 @@ class LogSanitizer:
     ) -> None:
         self.sanitizer = Sanitizer(config, context=context)
         self.verifier = Verifier(config)
-        self.context = context or TransformationContext()
+        self.context = self.sanitizer.context
         self.config = config
 
     def sanitize_file(

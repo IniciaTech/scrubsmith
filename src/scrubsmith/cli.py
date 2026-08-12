@@ -11,6 +11,7 @@ from scrubsmith import __version__
 from scrubsmith.config import load_config
 from scrubsmith.core.context import TransformationContext
 from scrubsmith.core.models import ExitCode, VerificationStatus, verification_to_exit_code
+from scrubsmith.core.scan_policy import ScanMode
 from scrubsmith.core.verifier import Verifier
 from scrubsmith.reporting import format_sanitization_report, format_scan_report, write_json_report
 from scrubsmith.sources.logs import LogSanitizer, paths_are_same
@@ -126,6 +127,16 @@ def scan(
         Path | None,
         typer.Option("--config", "-c", help="YAML configuration file."),
     ] = None,
+    scrubsmith_output: Annotated[
+        bool,
+        typer.Option(
+            "--scrubsmith-output",
+            help=(
+                "Declare that INPUT is Scrubsmith-generated output. "
+                "Recognizes well-defined synthetic namespaces only."
+            ),
+        ),
+    ] = False,
 ) -> None:
     """Scan input for potential sensitive data without modifying it."""
     try:
@@ -134,9 +145,10 @@ def scan(
         typer.echo(f"Error: {exc}", err=True)
         raise typer.Exit(ExitCode.ERROR) from exc
 
+    scan_mode = ScanMode.SCRUBSMITH_OUTPUT if scrubsmith_output else ScanMode.STRICT
     verifier = Verifier(cfg)
     try:
-        summary, status = verifier.scan_file_with_status(input)
+        summary, status = verifier.scan_file_with_status(input, scan_mode=scan_mode)
     except OSError as exc:
         typer.echo(f"Error: Failed to read file: {exc}", err=True)
         raise typer.Exit(ExitCode.ERROR) from exc

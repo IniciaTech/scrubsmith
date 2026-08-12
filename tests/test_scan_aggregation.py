@@ -25,7 +25,7 @@ def test_scan_aggregates_many_findings_without_retaining_list(tmp_path: Path, mo
 
     original_scan_line = Verifier._scan_line
 
-    def tracking_scan_line(self, line, accumulator, collected):
+    def tracking_scan_line(self, line, accumulator, collected, **kwargs):
         if collected is not None:
             original_collected = collected
 
@@ -34,7 +34,7 @@ def test_scan_aggregates_many_findings_without_retaining_list(tmp_path: Path, mo
                 return list.append(original_collected, item)
 
             collected.append = tracking_append  # type: ignore[method-assign]
-        return original_scan_line(self, line, accumulator, collected)
+        return original_scan_line(self, line, accumulator, collected, **kwargs)
 
     monkeypatch.setattr(Verifier, "_scan_line", tracking_scan_line)
 

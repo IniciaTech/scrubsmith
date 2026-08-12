@@ -2,7 +2,7 @@
 
 **Local-first sanitization for safe debugging and AI sharing.**
 
-Scrubsmith helps developers transform production diagnostic data — logs, JSON, CSV, database extracts, and more — into **safe diagnostic datasets** that preserve useful structure and correlations for debugging, without unnecessarily exposing real identities, credentials, or confidential information.
+Scrubsmith helps developers transform production diagnostic data into **safe diagnostic datasets** that preserve useful structure and correlations for debugging, without unnecessarily exposing real identities, credentials, or confidential information. **Phase 1 supports plain-text logs only**; JSON, CSV, and database sources are planned for later phases.
 
 ## The problem
 

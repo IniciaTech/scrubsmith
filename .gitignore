@@ -36,3 +36,8 @@ env/
 .DS_Store
 Thumbs.db
 ._*
+
+# Local validation / debug logs (never commit real or sanitized production data)
+*.processed
+*sanitized*
+*.safe.log

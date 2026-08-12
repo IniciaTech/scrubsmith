@@ -14,6 +14,8 @@ _DOC_IPV4_NETWORKS = [
 ]
 _DOC_IPV6_NETWORK = ipaddress.IPv6Network("2001:db8::/32")
 
+_SOFTWARE_VERSION_TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9+._-]*")
+
 
 def is_documentation_ip(value: str) -> bool:
     """Return True for RFC documentation/reserved ranges used by Scrubsmith output."""
@@ -187,3 +189,33 @@ def is_after_list_delimiter(text: str, start: int) -> bool:
 def is_valid_spanish_local_digits(digits: str) -> bool:
     """Return True for a 9-digit Spanish local number."""
     return len(digits) == 9 and digits[0] in "6789"
+
+
+def is_dotted_software_version(text: str, start: int) -> bool:
+    """
+    Return True when a dotted numeric span follows ``Product/`` version syntax.
+
+    Rejects IPv4-shaped version strings such as ``Browser/123.45.67.89`` without
+    vendor-specific rules. URL path segments (``/api/10.0.0.1``) are not affected.
+    """
+    if start == 0 or text[start - 1] != "/":
+        return False
+
+    token_end = start - 1
+    token_start = token_end
+    while token_start > 0 and (
+        text[token_start - 1].isalnum() or text[token_start - 1] in "._+-"
+    ):
+        if text[token_start - 1] == ":":
+            return False
+        token_start -= 1
+
+    token = text[token_start:token_end]
+    if not token or not token[0].isalpha():
+        return False
+
+    # Product token inside a URL/path (`/api/10.0.0.1`) — not version syntax.
+    if token_start > 0 and text[token_start - 1] == "/":
+        return False
+
+    return _SOFTWARE_VERSION_TOKEN.fullmatch(token) is not None

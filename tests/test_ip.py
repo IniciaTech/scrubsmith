@@ -57,3 +57,63 @@ def test_ip_hash_deterministic() -> None:
 
     token = r1.split()[-1]
     assert is_documentation_ip(token)
+
+
+def test_software_version_slash_syntax_not_ip() -> None:
+    detector = IPDetector()
+    assert detector.detect("Browser/123.45.67.89") == []
+    assert detector.detect("Engine/10.20.30.40") == []
+
+
+def test_chrome_version_like_string_not_ip() -> None:
+    detector = IPDetector()
+    text = "Mozilla/5.0 Chrome/123.45.67.89 Safari/537.36"
+    assert detector.detect(text) == []
+
+
+def test_software_version_not_sanitized_as_ip() -> None:
+    config = ScrubsmithConfig(version=1)
+    sanitizer = Sanitizer(config)
+    original = "Browser/123.45.67.89"
+    result, _ = sanitizer.sanitize_text(original)
+    assert result == original
+
+
+def test_normal_ipv4_contexts_still_detected() -> None:
+    detector = IPDetector()
+    cases = [
+        ("client_ip=10.20.30.40", "10.20.30.40"),
+        ("remote_addr: 203.0.113.25", "203.0.113.25"),
+        ("Connected from 10.20.30.40", "10.20.30.40"),
+        ("10.20.30.40 - - [access log]", "10.20.30.40"),
+    ]
+    for text, expected in cases:
+        findings = detector.detect(text)
+        assert len(findings) == 1
+        assert text[findings[0].start : findings[0].end] == expected
+
+
+def test_url_path_segment_ip_still_detected() -> None:
+    detector = IPDetector()
+    cases = [
+        "/api/10.20.30.40",
+        "/foo/api/10.20.30.40",
+        "https://example.test/api/10.20.30.40",
+        "path/segment/10.20.30.40",
+    ]
+    for text in cases:
+        findings = detector.detect(text)
+        assert len(findings) == 1, text
+        assert findings[0].start == text.index("10.20.30.40")
+
+
+def test_software_version_syntax_still_excluded() -> None:
+    detector = IPDetector()
+    cases = [
+        "Browser/123.45.67.89",
+        "Mozilla/100.20.30.40",
+        "Some-Agent/12.34.56.78",
+        "User-Agent: (compatible; Browser/123.45.67.89)",
+    ]
+    for text in cases:
+        assert detector.detect(text) == [], text

@@ -7,6 +7,7 @@ import re
 
 from scrubsmith.core.models import Category, Confidence, Finding, Severity
 from scrubsmith.detectors.base import RegexDetector
+from scrubsmith.detectors.validation import is_dotted_software_version
 
 IPV4_PATTERN = re.compile(
     r"(?<![\d.])"
@@ -57,6 +58,8 @@ class IPDetector(RegexDetector):
                 continue
             parts = candidate.split(".")
             if any(int(p) > 255 for p in parts):
+                continue
+            if is_dotted_software_version(text, match.start(1)):
                 continue
             findings.append(
                 Finding(

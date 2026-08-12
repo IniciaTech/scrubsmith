@@ -6,6 +6,7 @@ import re
 
 from scrubsmith.core.models import Category, Confidence, Finding, Severity
 from scrubsmith.detectors.base import RegexDetector
+from scrubsmith.detectors.generic.session_credentials import detect_session_credentials
 
 # JWT: three base64url segments
 JWT_PATTERN = re.compile(
@@ -69,6 +70,7 @@ class SecretsDetector(RegexDetector):
         findings.extend(self._detect_bearer(text))
         findings.extend(self._detect_authorization(text))
         findings.extend(self._detect_assignments(text))
+        findings.extend(self._detect_session_credentials(text))
         findings.extend(self._detect_cookie(text))
         findings.extend(self._detect_pem(text))
         return self.merge_non_overlapping(findings)
@@ -155,6 +157,9 @@ class SecretsDetector(RegexDetector):
                     )
                 )
         return findings
+
+    def _detect_session_credentials(self, text: str) -> list[Finding]:
+        return detect_session_credentials(text, detector_prefix=self.name)
 
     def _detect_cookie(self, text: str) -> list[Finding]:
         findings: list[Finding] = []

@@ -1,0 +1,30 @@
+version: 1
+
+detectors:
+  email:
+    enabled: true
+    strategy: fake
+
+  phone:
+    enabled: true
+    strategy: fake
+
+  ip:
+    enabled: true
+    strategy: hash
+
+  iban:
+    enabled: true
+    strategy: fake
+
+  spanish_id:
+    enabled: true
+    strategy: fake
+
+  credit_card:
+    enabled: true
+    strategy: redact
+
+  secrets:
+    enabled: true
+    strategy: redact

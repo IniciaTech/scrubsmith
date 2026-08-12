@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "scrubsmith"
+version = "0.1.0"
+description = "Local-first sanitization for safe debugging and AI sharing."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [{ name = "Scrubsmith Contributors" }]
+keywords = ["sanitization", "pii", "secrets", "privacy", "logs", "debugging"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Debuggers",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0.0",
+    "typer>=0.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.11.0",
+    "pytest>=8.0.0",
+    "ruff>=0.6.0",
+    "types-PyYAML>=6.0.0",
+]
+
+[project.scripts]
+scrubsmith = "scrubsmith.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/scrubsmith"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "N"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["scrubsmith"]
+mypy_path = "src"
+warn_return_any = true
+warn_unused_configs = true
